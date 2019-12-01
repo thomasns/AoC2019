@@ -9,7 +9,7 @@ namespace AoC2019
     class Helpers
     {
         public static String readToBuffer(int day) {
-            StreamReader sr = new StreamReader(@"C:\Users\thoma\Documents\AoC\input\day" + day + @".txt");
+            StreamReader sr = new StreamReader(@"C:\Users\oorah\Documents\aoc\input\" + day + @".txt");
             string input = sr.ReadToEnd();
             return input;
         }
