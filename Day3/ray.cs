@@ -47,17 +47,28 @@ namespace AoC2019
 
         }
 
+
+
         //Checks for an intersection between this ray and the passed ray
         //This is apparently broken commiting so i can revert if necessary.
+        //Okay, fixed it. In the spirit of full disclosure I try to never use google for these.. but I guess the purpose is to learn
+        // http://jeffreythompson.org/collision-detection/line-line.php
         public bool Crosses(ray r)
-        {
-            if (this.startX <= r.startX && this.stopX >= r.stopX && this.startY <= r.startY && this.stopY >= r.stopY)
-                return true;
-            return false;
-        }
+            { 
+                float denominator = ((stopX - startX) * (r.stopY - r.startY)) - ((stopY - startY) * (r.stopX - r.startX));
+                float numerator1 = ((startY - r.startY) * (r.stopX - r.startX)) - ((startX - r.startX) * (r.stopY - r.startY));
+                float numerator2 = ((startY - r.startY) * (stopX - startX)) - ((startX - r.startX) * (stopY - startY));
+
+                if (denominator == 0) 
+                    return numerator1 == 0 && numerator2 == 0;
+                float x = numerator1 / denominator;
+                float y = numerator2 / denominator;
+                return (x >= 0 && x <= 1) && (y >= 0 && y <= 1);
+
+            }
 
         //finds the specific point of intersection
-        //
+        // slower than finding a general crossing so only use if you've found a crossing
         public List<Tuple<int,int>> findIntersections(ray r)
         {
             List<Tuple<int,int>> Lout = new List<Tuple<int, int>>();

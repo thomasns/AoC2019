@@ -21,6 +21,7 @@ namespace AoC2019
             List<ray> Wire2 = new List<ray>();
 
             int wireNo = 1;
+            //Read in the individual segments
             foreach(string s in lin)
             {
                 int startx = 0;
@@ -75,7 +76,8 @@ namespace AoC2019
             foreach(ray r in Wire1)
             {
                 foreach (ray s in Wire2) {
-                        foreach (Tuple<int, int> t in r.findIntersections(s))
+                    if(r.Crosses(s)) //see if we cross
+                        foreach (Tuple<int, int> t in r.findIntersections(s)) //if we do find where and store it
                         {
                             intersections.Add(t);
                         }
@@ -85,7 +87,7 @@ namespace AoC2019
 
             int minDistance = 999999999;
             int d;
-            foreach(Tuple<int,int> t in intersections)
+            foreach(Tuple<int,int> t in intersections) //Check each crossing for the distance from the orgin and store the lowest non zero
             {
                 d = Helpers.ManhattanDist(t, new Tuple<int, int>(0, 0));
                 if (d < minDistance && d != 0)
@@ -100,8 +102,6 @@ namespace AoC2019
 
             //okay we still have all the intersections stored as tuples... 
             //positions will coorespont do the position of the tuples in t
-            List<int> wire1Cost = new List<int>();
-            List<int> wire2Cost = new List<int>();
             List<int> sumCost = new List<int>();
 
             intersections.RemoveAt(0);
@@ -110,23 +110,21 @@ namespace AoC2019
                 int w1 = 0;
                 int w2 = 0;
 
-                ray previousSegment = null;
 
                 foreach(ray segment in Wire1)
                 {
-                    if (segment.Crosses(new ray(t.Item1, t.Item1, t.Item2, t.Item2)))
+                    if (segment.Crosses(new ray(t.Item1, t.Item1, t.Item2, t.Item2))) //If we cross only add the cost from the start to the point not the full ray
                     {
-                        if(!segment.flipped)
+                        if(!segment.flipped) //Make sure we find the distance from the right side of the ray
                             w1+= Helpers.ManhattanDist(new Tuple<int, int>(segment.startX,segment.startY),t);
                         else 
                             w1+= Helpers.ManhattanDist(new Tuple<int, int>(segment.stopX,segment.stopY),t);
-                        break;
-                    } else
+                        break; //stop 
+                    } else //if we haven't found the crossing, add the full cost
                         w1+= Helpers.ManhattanDist(new Tuple<int, int>(segment.startX,segment.startY),new Tuple<int, int>(segment.stopX,segment.stopY));
-                    previousSegment = segment;
                 }
 
-                foreach(ray segment in Wire2)
+                foreach(ray segment in Wire2) //same thing just for the second wire
                 {
                     if (segment.Crosses(new ray(t.Item1, t.Item1, t.Item2, t.Item2)))
                     {
@@ -143,20 +141,21 @@ namespace AoC2019
 
             }
 
+            //find the minimum cost
             int minCost = 99999999;
             foreach (int i in sumCost)
                 if (i < minCost)
                     minCost = i;
 
 
-            Console.WriteLine("min cost: " + minCost);
             sw.Stop();
             TimeSpan ts = sw.Elapsed;
 
-            // Format and display the TimeSpan value.
+            // Bragging rights until Billy figures out what he did 
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
+            Console.WriteLine("min cost: " + minCost);
             Console.WriteLine("RunTime " + elapsedTime);
             Console.ReadLine();
 
