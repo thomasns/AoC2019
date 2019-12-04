@@ -41,6 +41,12 @@ namespace AoC2019
 
         }
 
+        public static int ManhattanDist(Tuple<int,int> t1, Tuple<int,int> t2)
+        {
+            return Math.Abs(t1.Item1 - t2.Item1) + Math.Abs(t1.Item2 - t2.Item2);
+
+        }
+
 
 
 
