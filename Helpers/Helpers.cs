@@ -9,10 +9,6 @@ namespace AoC2019
     class Helpers
     {
 
-        public static void Test()
-        {
-            int a;
-        }
         public static String readToBuffer(int day, string prefix = "") {
             StreamReader sr = new StreamReader(@"C:\Users\thoma\Documents\AoC\input\day"+ prefix + day + @".txt");
             string input = sr.ReadToEnd();

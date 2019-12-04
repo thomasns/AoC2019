@@ -151,7 +151,7 @@ namespace AoC2019
             sw.Stop();
             TimeSpan ts = sw.Elapsed;
 
-            // Bragging rights until Billy figures out what he did 
+            // Bragging rights until Billy gets gud
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
